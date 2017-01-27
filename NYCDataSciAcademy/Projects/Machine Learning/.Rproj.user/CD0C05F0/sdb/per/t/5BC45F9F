@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"ML\"\noutput: html_document\n---\n\n```{r , include=FALSE}\nlibrary(readr)\nlibrary(plyr)\nlibrary(data.table)\nlibrary(mlr)\nlibrary(xgboost)\nlibrary(data.table)\nlibrary(parallelMap)\nlibrary(FeatureHashing)\nlibrary(BBmisc)\nlibrary(Hmisc)\n\nall <- read.csv(\"train.csv\", row.names = \"id\")\ntest <- read.csv(\"test.csv\", row.names = \"id\")\nsapply(all, levels)\n\n\n\nnames(all)\n#names of all categorical variables\nf_names <- names(all)[c(1:116)]\nf_names\n\nunique(all$cont2)\nunique(test$cont2)\n\n#https://www.kaggle.com/divyanshusuri/allstate-claims-severity/simple-xgb-in-r/code\n#find a way to go through the variables and find variables with levels >n\nall.num <- list()\nfor (f in f_names) {\n#    all.red[[f]] <- combine.levels(all[[f]], minlev = 0.05)\n    all.num[[f]] <- (as.numeric(factor(all[[f]]))-1) / max((as.numeric(factor(all[[f]]))-1))\n}\nall.num <- as.data.frame(all.num)\n\n#all categorical variables transformed into integer already... all.num\n#cbind all.num to the continuous variables.\n\n#getting all the continuous variables\nall.cont <- all[, 117:131]\nnames(all.cont)\n\nall.trans <- cbind(all.num, all.cont)\n\nwrite.csv(all.trans, file = \"all_num.csv\")\n\n```\n## \n```{r }\n\ntest <- lm(loss ~., data=all.trans)\ntest\nsummary(test)\n\n\nvif(test)\n```\n\n## \n```{r pressure, echo=FALSE}\n#install.packages(\"corrplot\")\nlibrary(corrplot)\n\ncorrelations <- cor(all.trans[, 1:116])\ncorrplot(correlations, method=\"square\", order=\"hclust\")\n\n\n```\n\n",
+    "created" : 1479407104621.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2178813623",
+    "id" : "5BC45F9F",
+    "lastKnownWriteTime" : 1479507569,
+    "last_content_update" : 1479507569237,
+    "path" : "/media/oamar/343E89AE3E896A26/Users/Oamar/Google Drive/Oamar 2.0/NYCDataScience/Projects/ML/ML.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,121 @@
+For the blog
+
+All Stream
+	3 inf table (w/ stats)
+		Top of 3 exists at rank 25, WSJ
+	2 inf table (w/stats)
+		Top of 2 exists at 6, Yahoofinance
+	Network stats
+			## IGRAPH DNW- 96613 168519 -- 
+			## + attr: name (v/c), Followers (v/n), type (e/c), weight (e/n)
+			## + edges (vertex names):
+			##  [1] ______NGS______->BluegrassCap    ______NGS______->BrattleStCap   
+			##  [3] ______NGS______->FatTailCapital  ______NGS______->FatTailCapital 
+			##  [5] ______NGS______->Find_Me_Value   ______NGS______->inner_scorecard
+			##  [7] ______NGS______->KerrisdaleCap   ______NGS______->Liberty8988    
+			##  [9] ______NGS______->LongShortTrader ______NGS______->MaglanCapital  
+			## [11] ______NGS______->MarAzul_90      ______NGS______->max02050       
+			## [13] ______NGS______->maxvision33     ______NGS______->MugatuCapital  
+			## [15] ______NGS______->NickatFP        ______NGS______->SkeleCap       
+			## + ... omitted several edges
+		density: 
+			## new density directed
+			#ecount(compNet)/(vcount(compNet)*(vcount(compNet)-1))
+			#[1] 2.799118e-05
+		diam
+			fna = 13 undirected
+			fna vertices = + 14/96613 vertices, named:
+				[1] Eric_Caldwelljr TraderMerlin    dgib1038        FOREXcom        1stForexReview 
+				[6] futuresoption   Barry_Beans     theflynews      TchoungTchoung1 HenryEChang    
+				[11] FundHep_C       hepatitismag    HepCanada       HCVNEWDRUGS  
+			tna = 14 directed
+			tna vertices = + 15/96613 vertices, named:
+				[1] TRADERPIRATE    ARENABURSATIL   fffavela        AlisaStrategy   AntonioNaVi    
+				[6] IBD_ECarson     BarbarianCap    OptionsHawk     HumbleBioTrader DanaMattioli   
+				[11] GillianTan      devinbanerjee   ej_fournier     JCMcCracken     athomson6 
+		hub_score
+			top = markbspiegel
+		auth_score
+			top = sam_miller00
+		hsas
+			top = sam_miller00
+CA Stream
+	3 inf table (w/ stats)
+		Top of 3 exists at rank 23, Benzinga
+	2 inf table (w/stats)
+		Top of 2 exists at 4, LMTentarelli		
+	Network stats
+				## IGRAPH DNW- 431 181 -- 
+				## + attr: name (v/c), Followers (v/n), weight (e/n)
+				## + edges (vertex names):
+				##  [1] _bagholder_    ->ppprophet      20trilliondeb  ->ppprophet     
+				##  [3] 7LadyQ         ->eWhispers      7LadyQ         ->OpenOutcrier  
+				##  [5] 7LadyQ         ->WrigleyTom     AdaptToReality ->AdaptToReality
+				##  [7] adelivania     ->Benzinga       AdvisorboxMedia->MorningstarInc
+				##  [9] Alain_2012a    ->Boursier_com   alekskrug8     ->SleekMoneycom 
+				## [11] AlertTrade     ->AlertTrade     allgringo      ->ChinaInvest   
+				## [13] AlphSt_Live    ->Opinterest     AltruistWealth ->eWhispers     
+				## [15] aTGelstmM      ->PersonsPlanet  ATPFtrading    ->gouluk1       
+				## + ... omitted several edges
+		density:
+			edge_density(compNet, loops=F)
+			[1] 0.0009550531
+		diam
+			fna = 9 vertices
+			fna vertices = + 10/431 vertices, named:
+				[1] TachyonGlobalLL StakepoolCom    LMTentarelli    tamaraspen2     ppprophet      
+				[6] diggingplatinum WrigleyTom      nixonstocks     ACInvestorBlog  ProbabilityOne
+			tna = 2 vertices
+			tna vertices = + 3/431 vertices, named:
+				[1] Hypocrites_Oath OpenOutcrier    WrigleyTom     
+		hub_score
+			top = SpeedyCalls
+		auth_score
+			top = WrigleyTom
+		hsas
+			top = WrigleyTom
+	Network plot
+		diam
+		hub_score
+		auth_score
+
+
+
+Explanation for the discrepancy.
+
+Fractional ranking normalizes the weight difference between the three categories .... retweets and 
+mentions which are not done when computing for the hub score and auth score
+
+Although similarities in the results may be achieved if the edge attributes are further broken down to retweets and mentions, but this is
+beyond the scope of this activity.
+
+CA
+> V(compNet)$name[ V(compNet)$hs == 1]
+[1] "WrigleyTom"
+> V(compNet)$name[ V(compNet)$as == 1]
+[1] "sam_miller00"
+
+> V(compNet)$name[ V(compNet)$hsas == max(V(compNet)$hsas)]
+[1] "WrigleyTom"
+
+WrigleyTom
+hs = 1
+as = 0.08255305
+hsas = 1.082553
+
+Benzinga
+hs = 0.821876
+as = 0.05697365
+hsas = 0.8788497
+
+sam_miller00
+hs = 0
+as = 1
+
+LMTentarelli
+hs = 0.6615921
+as = 0.03743966
+hsas = 0.6990317
+
+Marginal overlaps were observed in these three top lists. These top 4 lists only had one user in common, LMTentarelli
+

@@ -1,0 +1,91 @@
+---
+title: "ML"
+output: html_document
+---
+
+```{r , include=FALSE}
+library(readr)
+library(plyr)
+library(data.table)
+library(mlr)
+library(xgboost)
+library(data.table)
+library(parallelMap)
+library(FeatureHashing)
+library(BBmisc)
+library(Hmisc)
+
+all <- read.csv("train.csv", row.names = "id")
+test <- read.csv("test.csv", row.names = "id")
+sapply(all, levels)
+
+
+
+names(all)
+#names of all categorical variables
+f_names <- names(all)[c(1:116)]
+length(f_names)
+
+#https://www.kaggle.com/divyanshusuri/allstate-claims-severity/simple-xgb-in-r/code
+#find a way to go through the variables and find variables with levels >n
+all.num <- list()
+for (f in f_names) {
+#    all.red[[f]] <- combine.levels(all[[f]], minlev = 0.05)
+    all.num[[f]] <- (as.numeric(factor(all[[f]]))-1) / max((as.numeric(factor(all[[f]]))-1))
+}
+all.num <- as.data.frame(all.num)
+
+#all categorical variables transformed into integer already... all.num
+#cbind all.num to the continuous variables.
+
+#getting all the continuous variables
+all.cont <- all[, 117:131]
+names(all.cont)
+
+all.trans <- cbind(all.num, all.cont)
+
+#dummify cat variable with levels >2
+raw.cat <- cbind(all[,73:116], all$loss)
+head(raw.cat)
+all.cat <- model.matrix(all$loss ~ ., data = raw.cat)
+dim(all.cat)
+
+
+
+#write.csv(all.trans, file = "all_num.csv")
+
+sum(is.na(all.trans))
+#all columns converted and scaled to numeric: all.trans
+
+names(all.trans)
+
+correlationMatrix <- abs(cor(all.trans[,-131]))
+library(corrplot)
+corrplot(correlationMatrix)
+diag(correlationMatrix) <- 0
+which(correlationMatrix > 0.8, arr.ind=T)
+###
+
+```
+## 
+```{r }
+
+test <- lm(loss ~., data=all.trans)
+test
+summary(test)
+
+
+vif(test)
+```
+
+## 
+```{r pressure, echo=FALSE}
+#install.packages("corrplot")
+library(corrplot)
+
+correlations <- cor(all.trans[, 1:116])
+corrplot(correlations, method="square", order="hclust")
+
+
+```
+

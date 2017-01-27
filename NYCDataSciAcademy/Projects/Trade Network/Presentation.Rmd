@@ -1,0 +1,164 @@
+---
+title: "Global Trade"
+author: "Oamar Gianan"
+date: "October 27, 2016"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
+
+####### START HERE
+
+```{r load libraries, echo=TRUE, message=TRUE, warning=TRUE}
+
+csvs <- list.files(path = 'csv/', pattern = ".CSV")
+csvs <- paste('csv/', csvs, sep = '')
+length(csvs)
+all_data <- do.call("rbind", lapply(csvs, read_csv))
+
+#Discard duplicate rows
+
+all_data <- all_data[!duplicated(all_data),]
+raw_data <- all_data
+all_data <- all_data %>% filter(Partner != '...')
+all_data <- all_data %>% filter(`Indicator Type` == 'Export' | `Indicator Type` == 'Import')
+
+
+all_data <- all_data %>% filter(!str_detect(Indicator, 'share'))
+all_data <- all_data %>% filter(Partner != 'Unspecified')
+all_data <- all_data %>% filter(Partner != 'Other Asia, nes')
+all_data <- all_data %>% filter(Reporter != 'Occ.Pal.Terr')
+all_data <- all_data %>% filter(Partner != 'Free Zones')
+all_data <- all_data %>% filter(Reporter != 'European Union')
+all_data <- all_data %>% filter(Reporter != 'World')
+all_data <- all_data %>% filter(Partner != 'Bunkers')
+
+all_data <- all_data %>% select(1:11)
+
+library(reshape)
+library(reshape)
+vec <- names(all_data)[1:5]
+vec
+all_data <- as.data.frame(all_data)
+class(all_data)
+
+all_data <-melt(all_data, id = vec)
+names(all_data)[6] <- "Year"
+names(all_data)[7] <- "amount"
+
+all_data <- all_data[complete.cases(all_data),]
+
+all_data <- all_data %>% filter(Partner != 'Other Asia, nes' & Reporter != 'Other Asia, nes')
+
+library(readr)
+write_csv(all_data, "temp.csv")
+
+all_data <- read_csv("temp.csv")
+
+
+Reporter <- unique(all_data$Reporter)
+Partner <- unique(all_data$Partner)
+Countries <- c(Reporter, Partner)
+Countries <- unique(Countries)
+t <- as.data.frame(Countries)
+
+
+all_data <- all_data %>% filter(Partner != 'Special Categories' & Reporter != 'Special Categories')
+
+write_csv(all_data, "temp.csv")
+
+
+
+all_data <- all_data %>% filter(Partner != 'World' | `Product categories` != "All Products")
+
+write_csv(all_data, "temp.csv")
+
+
+
+all_data_categorized <- all_data %>% filter(Partner == 'World')
+
+
+
+
+write_csv(all_data_categorized, 'all_categorized.csv')
+
+all_data <- all_data %>% filter(Partner != 'World')
+
+all_data_im <- all_data %>% filter(`Indicator Type` == 'Import')
+all_data_ex <- all_data %>% filter(`Indicator Type` == 'Export')
+
+
+names(all_data_im)
+names(all_data_im)[1] <- 'To'
+names(all_data_im)[2] <- 'From'
+
+names(all_data_ex)
+names(all_data_ex)[1] <- 'From'
+names(all_data_ex)[2] <- 'To'
+
+all_data_ex <- all_data_ex %>% select(1, 2, 6, 7)
+
+all_data_im <- all_data_im %>% select(2, 1, 6, 7)
+
+almost <- as.data.frame(rbind(all_data_im, all_data_ex))
+class(almost)
+write_csv(almost, "all_data.csv")
+
+
+```
+
+
+
+```{r }
+select_year <- 2015
+select_percentile <- 95
+       
+
+
+df <- all_data %>% filter(Year == select_year) %>% 
+                     filter(amount > quantile(all_data$amount, as.numeric(select_percentile)*.01))  %>% 
+                     select(From, To, amount) %>%
+                     filter(From %in% Countries)
+
+
+```
+
+```{r chorddiagram}
+              circos.par(start.degree = 90)
+              chordDiagramFromDataFrame(df, directional = TRUE,
+                                   grid.col = grid_col,
+                                   #col = c("#FF000080", "#00FF0010", "#0000FF10"),
+                                   #col = c("#E8253C", "#AE1B2D", "#74121E", "#3A090F", "#000000"),
+                                   transparency=0.3)
+              circos.clear()
+
+
+
+```

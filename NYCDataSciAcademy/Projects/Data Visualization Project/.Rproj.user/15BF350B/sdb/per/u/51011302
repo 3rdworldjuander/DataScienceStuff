@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "V(compNet)$name[ V(compNet)$hsas == max(V(compNet)$hsas)]\n\nV(compNet)$hsas[ V(compNet)$name == \"Benzinga\"]\n",
+    "created" : 1477016444611.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "3780573469",
+    "id" : "51011302",
+    "lastKnownWriteTime" : 12948063679152242,
+    "last_content_update" : 1477016882306,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

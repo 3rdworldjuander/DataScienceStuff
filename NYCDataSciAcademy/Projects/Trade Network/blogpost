@@ -1,0 +1,33 @@
+When looking at global trade data, it is often a challenge to get quick insights about the relationships between trade partners. This is because of the inherent complexity of the data.
+Effective visualizations of trade flows can enhance our understanding of a country's economic activity.
+
+#Visualizing Global Trade
+The most common way of visualizing flow between countries is drawing lines on a geographic map. This type of visualization is often very effective for small datasets with limited complexity. However, because of the amount of data in global trade and the number of trading partners a country has, the resulting visualization is just a clutter of overlaying arrows with little insight to be drawn. Case in point is the map below.
+
+<MAP HERE>
+
+The source of my global trade data, World Integrated Trade Solution <http://wits.worldbank.org/> presents a number of visualization techniques to relay insight behind the numbers. Tree maps were used to present each country's trade volume with other countries.
+<image here>
+Network graphs where countries are depicted as nodes and links as trade routes was used to show which countries trade with each other. Additional information can be derived from the network graph such as the volume of the trade route; depicted by the thickness of the links, and the proportion of the import and export; depicted by the size of the node.
+<image here>
+
+#An alternative
+Visualization of global trade data have to depict a large amount of information. The most important of which are the information of origin and destination, and the volume of trade.
+A proposed alternative is the use of chord diagrams. This diagram is a circular plot which can arguably present global trade data in an intuitively graspable way.
+Aside from being more visually appealing than Figure 1, some key elements of the design help us gain insight with just a quick glance at the diagram.
+• The trading countries are represented by the circle's sectors. Each country is assigned a unique color which can be randomly chosen or can be picked from a gradient scale to depict economic indicators. For example, darker colors can represent higher GDP.
+<image here>
+• The flow of trade is encoded by the origin color. In the closeup shown below, <country a> is assigned a <color a> color, <country b> is encoded <color b>, Region C is encoded blue and Region D is encoded orange. Hence, the flow from Region D to Region A is colored orange, and the much smaller counter flow from Region A to Region D is colored red. The direction of the flow is also indicated by a gap between flow and circle segment at the destination.
+<image here>
+• The volume of trade is indicated by the width of the flow and the radians of each sector. The trade's corresponding dollar value is also indicated by tick marks on the outside of the circle’s segments.
+<image here>
+• The net trade movement are identified through the relative differences in the radians. Here we see that <country> is a net importer with most of its trade volume incoming rather than out.
+<image here>
+
+#Insights gained
+The chord diagram was implemented using circlize library in R. The shiny app was designed to be flexible in terms of choosing which countries to investigate. By picking a few countries at a time, the chord complexity is minimized. The data collected and presented were that of 2010 to 2015.
+A quick look at the trading activities of the members of G8 countries consistently show the United States as the top in trade activity. The United States is a net importer with its import volume overshadowing its exports by as much as 55% in 2010.
+Among BRIC nations, China overshadowed all its partners in terms of trade activity throughout the period. Aside from being a net exporter with as much as 63% more exports than imports in 2010, the country showed a steady increase of exports from 2010 to 2014.
+
+#Future work
+The visualization is only as good as the data which is available. Upon further investigation of the dataset, it showed that not all countries were able to report their trade activities consistently. The current library used has limitations in terms of interactivity. It would have been better if a user can click on a particular flow and see a breakdown in terms of the product category which makes up the flow. For now, this is augmented by a table next to the chord diagram.
